@@ -1,0 +1,7 @@
+- from:
+    uri: "kamelet:kafka-not-secured-source"
+    parameters:
+      bootstrapServers: "localhost:9092"
+      topic: "metrics"
+    steps:
+      - to: "kamelet:metrics-bridge"
