@@ -1,0 +1,61 @@
+# ---------------------------------------------------------------------------
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ---------------------------------------------------------------------------
+apiVersion: camel.apache.org/v1alpha1
+kind: Kamelet
+metadata:
+  name: ephemeral-kafka-source
+  annotations:
+    camel.apache.org/kamelet.support.level: "Stable"
+    camel.apache.org/catalog.version: "main-SNAPSHOT"
+    camel.apache.org/kamelet.group: "Kafka"
+    camel.apache.org/keda.type: "kafka"
+  labels:
+    camel.apache.org/kamelet.type: "source"
+spec:
+  definition:
+    title: "Kafka"
+    description: "TODO"
+    required:
+      - topic
+      - bootstrapServers
+    type: object
+    properties:
+      topic:
+        title: Topic Names
+        type: string
+      bootstrapServers:
+        title: Bootstrap Servers
+        type: string
+      consumerGroup:
+        title: Consumer Group
+        type: string
+  dependencies:
+    - "camel:kafka"
+    - "camel:kamelet"
+  template:
+    beans:
+      - name: "offset-repo"
+        type: "#class:org.apache.camel.impl.engine.MemoryStateRepository"
+    from:
+      uri: "kafka:{{topic}}"
+      parameters:
+        brokers: "{{bootstrapServers}}"
+        autoOffsetReset: "earliest"
+        groupId: "{{?consumerGroup}}"
+        offsetRepository: "#{{offset-repo}}"
+      steps:
+        - to: "kamelet:sink"

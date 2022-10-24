@@ -1,5 +1,5 @@
 - from:
-    uri: "kamelet:kafka-not-secured-source"
+    uri: "kamelet:ephemeral-kafka-source"
     parameters:
       bootstrapServers: "localhost:9092"
       topic: "metrics"
