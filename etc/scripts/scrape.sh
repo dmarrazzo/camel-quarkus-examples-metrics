@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-curl -XGET -s http://localhost:9988/q/metrics | grep foo
+http :9988/q/metrics | grep foo
