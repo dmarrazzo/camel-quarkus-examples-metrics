@@ -1,0 +1,20 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: KameletBinding
+metadata:
+  name: kafka-metrics
+  annotations:
+    trait.camel.apache.org/prometheus.enabled: "true"
+spec:
+  sink:
+    ref:
+      apiVersion: camel.apache.org/v1alpha1
+      kind: Kamelet
+      name: metrics-bridge
+  source:
+    properties:
+      bootstrapServers: my-cluster-kafka-bootstrap.my-kafka.svc:9092
+      topic: metrics
+    ref:
+      apiVersion: camel.apache.org/v1alpha1
+      kind: Kamelet
+      name: ephemeral-kafka-source
