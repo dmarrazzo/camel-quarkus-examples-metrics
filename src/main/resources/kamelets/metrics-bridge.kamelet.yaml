@@ -30,7 +30,6 @@ spec:
     description: |-
       TODO
   dependencies:
-    - "camel:micrometer"
     - "camel:log"
     - "camel:kamelet"
     - "camel:core"
@@ -45,7 +44,7 @@ spec:
             name: "metrics-type"
             jq: ".type"
         - tod:
-            uri: "micrometer:${header.metrics-type}:ignored"
+            uri: "microprofile-metrics:${header.metrics-type}:${header.CamelMetricsName}"
         - convertBodyTo:
             type: "java.lang.String"
         - to:
