@@ -13,6 +13,7 @@ etc/scripts/scrape.sh
 
 ## Deploy in OpenShift
 
+### Kamelet deployment
 
 Create a project, the Kafka broker and a topic:
 
@@ -34,3 +35,29 @@ Deploy the KameletBinding:
 ```sh
 oc apply -f k8s/03-kafka-metrics-binding.yaml
 ```
+### Test the behavior
+
+Inject a message in Kafka:
+
+```sh
+oc exec -it my-cluster-kafka-0 -- bin/kafka-console-producer.sh \
+  --bootstrap-server my-cluster-kafka-bootstrap:9092 \
+  --topic metrics
+```
+
+When prompted (`>`) type in the following message: `{ "type": "counter", "name": "foo" }`
+
+Inspect the metrics:
+
+- Open a remote shell in the Kamelet pod:
+
+  ```sh
+  oc rsh (oc get pods -l camel.apache.org/integration=kafka-metrics -o=jsonpath='{.items[0].metadata.name}')
+  ```
+
+- Inside the pod probe the metrics:
+
+  ```sh
+  curl -s http://localhost:8080/q/metrics | grep foo
+  ```
+
