@@ -12,7 +12,7 @@ spec:
       name: metrics-bridge
   source:
     properties:
-      bootstrapServers: my-cluster-kafka-bootstrap.my-kafka.svc:9092
+      bootstrapServers: my-cluster-kafka-bootstrap.metrics.svc:9092
       topic: metrics
     ref:
       apiVersion: camel.apache.org/v1alpha1
