@@ -5,16 +5,16 @@ metadata:
   annotations:
     trait.camel.apache.org/prometheus.enabled: "true"
 spec:
+  source:
+    ref:
+      apiVersion: camel.apache.org/v1alpha1
+      kind: Kamelet
+      name: ephemeral-kafka-source
+    properties:
+      bootstrapServers: my-cluster-kafka-bootstrap.metrics.svc:9092
+      topic: metrics
   sink:
     ref:
       apiVersion: camel.apache.org/v1alpha1
       kind: Kamelet
       name: metrics-bridge
-  source:
-    properties:
-      bootstrapServers: my-cluster-kafka-bootstrap.metrics.svc:9092
-      topic: metrics
-    ref:
-      apiVersion: camel.apache.org/v1alpha1
-      kind: Kamelet
-      name: ephemeral-kafka-source

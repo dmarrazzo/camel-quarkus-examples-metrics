@@ -2,6 +2,8 @@
 
 ## Local execution
 
+Run the the kamelets logic through a Camel Quarkus [Route](etc/data/routes.yaml).
+
 ```sh
 etc/scripts/start-kafka.sh
 
@@ -12,6 +14,12 @@ etc/scripts/scrape.sh
 ```
 
 ## Deploy in OpenShift
+
+Run the the kamelets logic through a [KameletBinding](k8s/03-kafka-metrics-binding.yaml) handled by the Camel K Operator.
+
+**PREREQUISITE**: _Camel K Operator v1.10.2 or above_
+
+**WARNING**: The current version of the Camel K Operator relies on the [Microprofile Metrics Component](https://camel.apache.org/components/3.18.x/microprofile-metrics-component.html). In future versions, it will be replaced by [Micrometer Component](https://camel.apache.org/components/3.18.x/micrometer-component.html), when it will happen the kamelet code will requires a limited refactoring.
 
 ### Kamelet deployment
 
@@ -35,6 +43,7 @@ Deploy the KameletBinding:
 ```sh
 oc apply -f k8s/03-kafka-metrics-binding.yaml
 ```
+
 ### Test the behavior
 
 Inject a message in Kafka:
